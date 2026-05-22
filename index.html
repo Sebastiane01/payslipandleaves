@@ -3,31 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Portal | Payslip & Leave Management</title>
+    <title>BPO Operations Hub | Leave & VTO Management</title>
     <!-- Tailwind CSS for modern, clean UI layout -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-gray-50 font-sans text-gray-800 antialiased">
+<body class="bg-slate-50 font-sans text-slate-800 antialiased">
+
+    <!-- ROLE SWITCHER BAR (Simulating Account Switching on GitHub Pages) -->
+    <div class="bg-amber-500 text-slate-950 px-4 py-2 text-xs font-bold flex flex-col sm:flex-row justify-between items-center gap-2 border-b border-amber-600">
+        <span class="flex items-center gap-1.5"><i class="fa-solid fa-circle-user text-sm"></i> TESTING CONTROLS: Switch Active Account View</span>
+        <div class="flex flex-wrap gap-1">
+            <button onclick="changeRole('Agent')" id="role-btn-Agent" class="px-2.5 py-1 bg-slate-900 text-white rounded shadow-xs cursor-pointer">Agent View</button>
+            <button onclick="changeRole('TL')" id="role-btn-TL" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded shadow-xs cursor-pointer">Team Lead (TL) View</button>
+            <button onclick="changeRole('Client')" id="role-btn-Client" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded shadow-xs cursor-pointer">Client View</button>
+            <button onclick="changeRole('Ops')" id="role-btn-Ops" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded shadow-xs cursor-pointer">Ops Manager View</button>
+        </div>
+    </div>
 
     <!-- Navigation Header -->
     <header class="bg-slate-900 text-white shadow-md">
         <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
                 <div class="bg-blue-600 p-2 rounded-lg text-white">
-                    <i class="fa-solid fa-wallet text-xl"></i>
+                    <i class="fa-solid fa-headset text-xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-xl font-bold tracking-tight">EP-Hub</h1>
-                    <p class="text-xs text-slate-400">Employee Self-Service Portal</p>
+                    <h1 class="text-xl font-bold tracking-tight">OpsCore Portal</h1>
+                    <p class="text-xs text-slate-400">Account Role: <span id="current-role-display" class="text-blue-400 font-semibold">Agent</span></p>
                 </div>
             </div>
             <nav class="flex gap-2">
-                <button onclick="switchTab('payslip')" id="btn-payslip" class="px-4 py-2 rounded-md font-medium text-sm transition-colors bg-blue-600 text-white">
-                    <i class="fa-solid fa-file-invoice-dollar mr-2"></i>View Payslip
+                <button onclick="switchTab('payslip')" id="nav-payslip" class="px-4 py-2 rounded-md font-medium text-sm transition-colors bg-blue-600 text-white">
+                    <i class="fa-solid fa-file-invoice-dollar mr-2"></i>Payslip
                 </button>
-                <button onclick="switchTab('leave')" id="btn-leave" class="px-4 py-2 rounded-md font-medium text-sm transition-colors text-slate-300 hover:bg-slate-800 hover:text-white">
-                    <i class="fa-solid fa-calendar-deck mr-2"></i>Leave Scheduling
+                <button onclick="switchTab('leave')" id="nav-leave" class="px-4 py-2 rounded-md font-medium text-sm transition-colors text-slate-300 hover:bg-slate-800 hover:text-white">
+                    <i class="fa-solid fa-calendar-day mr-2"></i>Leave & VTO
+                </button>
+                <!-- Manager/TL exclusive approvals tab -->
+                <button onclick="switchTab('approvals')" id="nav-approvals" class="hidden px-4 py-2 rounded-md font-medium text-sm transition-colors text-slate-300 hover:bg-slate-800 hover:text-white">
+                    <i class="fa-solid fa-clipboard-check mr-2"></i>Approvals <span id="approval-badge" class="ml-1.5 px-1.5 py-0.5 text-xs bg-rose-500 text-white rounded-full">3</span>
                 </button>
             </nav>
         </div>
@@ -36,217 +51,182 @@
     <!-- Main Content Container -->
     <main class="max-w-7xl mx-auto px-4 py-8">
         
-        <!-- SECTION 1: PAYSLIP COMPONENT -->
+        <!-- ==================== TAB 1: PAYSLIP (Accessible to Agent, TL, Ops) ==================== -->
         <section id="tab-payslip" class="block animate-fade-in">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-                <div>
-                    <h2 class="text-2xl font-bold text-slate-900">Earnings Statement</h2>
-                    <p class="text-sm text-gray-500">Review your recent compensation details and deductions.</p>
-                </div>
-                <button onclick="window.print()" class="w-full md:w-auto px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium bg-white text-gray-700 hover:bg-gray-50 shadow-xs flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-print"></i> Print / Save PDF
-                </button>
+            <!-- Access Restriction Message Container -->
+            <div id="payslip-restriction-msg" class="hidden bg-white border border-gray-200 rounded-xl p-8 text-center max-w-md mx-auto my-12">
+                <i class="fa-solid fa-lock text-4xl text-slate-300 mb-4"></i>
+                <h3 class="text-lg font-bold text-slate-900">Access Denied</h3>
+                <p class="text-sm text-gray-500 mt-1">Client accounts are restricted from examining internal payroll documentation frameworks.</p>
             </div>
 
-            <!-- Printable Payslip Document Card -->
-            <div id="printable-area" class="bg-white rounded-xl shadow-xs border border-gray-200 overflow-hidden max-w-4xl mx-auto p-6 md:p-8">
-                <!-- Company & Document Info Header -->
-                <div class="border-b border-gray-200 pb-6 flex flex-col sm:flex-row justify-between gap-4">
+            <div id="payslip-content-wrapper">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                     <div>
-                        <h3 class="text-lg font-bold text-slate-900">Nexus Tech Solutions Ltd.</h3>
-                        <p class="text-sm text-gray-500">100 Innovation Way, Tech District</p>
-                        <p class="text-sm text-gray-500">HR/Payroll: payroll@nexustech.io</p>
+                        <h2 class="text-2xl font-bold text-slate-900">Earnings Statement</h2>
+                        <p class="text-sm text-gray-500">Review your recent compensation details, metrics, and standard adjustments.</p>
                     </div>
-                    <div class="sm:text-right">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 mb-2">Paid</span>
-                        <p class="text-sm font-semibold text-gray-600">Pay Period</p>
-                        <p class="text-sm text-slate-900 font-medium">May 01, 2026 – May 15, 2026</p>
-                        <p class="text-xs text-gray-400 mt-1">Payment Date: May 15, 2026</p>
-                    </div>
+                    <button onclick="window.print()" class="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium bg-white text-gray-700 hover:bg-gray-50 shadow-xs flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-print"></i> Print Payslip
+                    </button>
                 </div>
 
-                <!-- Employee Metadata Information Block -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 py-6 border-b border-gray-100 bg-slate-50/50 rounded-lg px-4 my-6">
-                    <div>
-                        <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Employee Name</span>
-                        <p class="text-sm font-bold text-slate-900">John Doe</p>
+                <div class="bg-white rounded-xl shadow-xs border border-gray-200 overflow-hidden max-w-4xl mx-auto p-6 md:p-8">
+                    <div class="border-b border-gray-200 pb-6 flex flex-col sm:flex-row justify-between gap-4">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900">TSD Global Company</h3>
+                            <p class="text-sm text-gray-500">BPO Operations & Staffing Division</p>
+                        </div>
+                        <div class="sm:text-right">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Paid</span>
+                            <p class="text-sm text-slate-900 font-medium mt-2">May 01 – May 15, 2026</p>
+                        </div>
                     </div>
-                    <div>
-                        <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Employee ID</span>
-                        <p class="text-sm font-medium text-slate-900">EMP-2026-089</p>
-                    </div>
-                    <div>
-                        <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Department</span>
-                        <p class="text-sm font-medium text-slate-900">Information Technology</p>
-                    </div>
-                    <div>
-                        <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Payment Method</span>
-                        <p class="text-sm font-medium text-slate-900">Direct Deposit (****4321)</p>
-                    </div>
-                </div>
 
-                <!-- Financial Breakdown Matrix Table -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
-                    <!-- Earnings Column Grid -->
-                    <div>
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 border-b border-slate-200 pb-2 mb-3">Earnings</h4>
-                        <div class="space-y-3">
-                            <div class="flex justify-between text-sm">
-                                <span class="text-gray-600">Basic Salary</span>
-                                <span class="font-medium text-gray-900">$2,450.00</span>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 py-4 border-b border-gray-100 bg-slate-50/70 rounded-lg px-4 my-6 text-sm">
+                        <div>
+                            <span class="text-xs font-semibold text-gray-400 uppercase">Employee</span>
+                            <p id="payslip-name" class="font-bold text-slate-900">Kyle Sebastiane Espiritu</p>
+                        </div>
+                        <div>
+                            <span class="text-xs font-semibold text-gray-400 uppercase">Position</span>
+                            <p id="payslip-title" class="font-medium text-slate-700">Customer Service Agent</p>
+                        </div>
+                        <div>
+                            <span class="text-xs font-semibold text-gray-400 uppercase">Employee ID</span>
+                            <p class="font-medium text-slate-700">EMP-2026-9941</p>
+                        </div>
+                        <div>
+                            <span class="text-xs font-semibold text-gray-400 uppercase">Program Line</span>
+                            <p class="font-medium text-slate-700">Telecom Campaign Alpha</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                        <div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 border-b pb-2 mb-3">Earnings Breakdown</h4>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between"><span>Basic Salary (Nesting/Prod)</span><span class="font-medium">$950.00</span></div>
+                                <div class="flex justify-between"><span>Night Shift Differential</span><span class="font-medium">$120.00</span></div>
+                                <div class="flex justify-between"><span>Performance Incentives</span><span class="font-medium">$150.00</span></div>
+                                <div class="flex justify-between font-bold text-slate-900 pt-3 border-t border-dashed border-gray-200"><span>Gross Earnings</span><span>$1,220.00</span></div>
                             </div>
-                            <div class="flex justify-between text-sm">
-                                <span class="text-gray-600">Overtime (8.5 hrs)</span>
-                                <span class="font-medium text-gray-900">$212.50</span>
-                            </div>
-                            <div class="flex justify-between text-sm">
-                                <span class="text-gray-600">Tech Allowance</span>
-                                <span class="font-medium text-gray-900">$75.00</span>
-                            </div>
-                            <div class="flex justify-between font-semibold text-sm text-slate-900 pt-3 border-t border-dashed border-gray-200">
-                                <span>Gross Earnings</span>
-                                <span>$2,737.50</span>
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 border-b pb-2 mb-3">Statutory & Tax Deductions</h4>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between"><span>Withholding Income Tax</span><span class="font-medium">$115.00</span></div>
+                                <div class="flex justify-between"><span>Social Security Contribution</span><span class="font-medium">$45.00</span></div>
+                                <div class="flex justify-between"><span>Health Insurance Premium</span><span class="font-medium">$25.00</span></div>
+                                <div class="flex justify-between font-bold text-slate-900 pt-3 border-t border-dashed border-gray-200"><span>Total Deductions</span><span class="text-rose-600">-$185.00</span></div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Deductions Column Grid -->
-                    <div>
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 border-b border-slate-200 pb-2 mb-3">Deductions</h4>
-                        <div class="space-y-3">
-                            <div class="flex justify-between text-sm">
-                                <span class="text-gray-600">Income Tax (Withholding)</span>
-                                <span class="font-medium text-gray-900">$314.80</span>
-                            </div>
-                            <div class="flex justify-between text-sm">
-                                <span class="text-gray-600">Social Security Contribution</span>
-                                <span class="font-medium text-gray-900">$85.00</span>
-                            </div>
-                            <div class="flex justify-between text-sm">
-                                <span class="text-gray-600">Health Insurance Premium</span>
-                                <span class="font-medium text-gray-900">$45.20</span>
-                            </div>
-                            <div class="flex justify-between font-semibold text-sm text-slate-900 pt-3 border-t border-dashed border-gray-200">
-                                <span>Total Deductions</span>
-                                <span class="text-rose-600">-$445.00</span>
-                            </div>
+                    <div class="mt-8 pt-6 border-t-2 border-slate-900 flex flex-col sm:flex-row justify-between items-center bg-slate-900 text-white p-6 rounded-xl gap-4">
+                        <div>
+                            <h3 class="text-lg font-bold">Net Pay Take-Home</h3>
+                            <p class="text-xs text-slate-400">Deposited directly to your linked corporate bank account</p>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Total Take-Home Summary Card Block -->
-                <div class="mt-8 pt-6 border-t-2 border-slate-900 flex flex-col sm:flex-row justify-between items-center bg-slate-900 text-white p-6 rounded-xl gap-4">
-                    <div>
-                        <h3 class="text-lg font-bold">Net Pay Take-Home</h3>
-                        <p class="text-xs text-slate-400">Total amount deposited to account after mandatory adjustments</p>
-                    </div>
-                    <div class="text-3xl font-black tracking-tight text-emerald-400">
-                        $2,292.50
+                        <div class="text-3xl font-black text-emerald-400">$1,035.00</div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION 2: LEAVE SCHEDULING COMPONENT -->
+        <!-- ==================== TAB 2: LEAVE & VTO SCHEDULING (All Roles) ==================== -->
         <section id="tab-leave" class="hidden animate-fade-in">
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-slate-900">Planned Leave Scheduling</h2>
-                <p class="text-sm text-gray-500">Book time off work and track upcoming team absence schedules.</p>
+                <h2 class="text-2xl font-bold text-slate-900">Time Off & VTO Scheduling</h2>
+                <p class="text-sm text-gray-500">File planned rest allocations, standard medical exceptions, or claim open line VTO slots.</p>
             </div>
 
-            <!-- Balances and Scheduling Split Layout -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Column A: Accrual Trackers & Form -->
+                <!-- Left Control Widget Column -->
                 <div class="lg:col-span-1 space-y-6">
-                    <!-- Current Accrual Balances -->
+                    <!-- Balances Block -->
                     <div class="bg-white p-6 rounded-xl shadow-xs border border-gray-200">
-                        <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Available Balances</h3>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="bg-blue-50 border border-blue-100 p-4 rounded-lg text-center">
-                                <span class="text-xs font-semibold text-blue-700 block mb-1">Paid Vacation</span>
-                                <span class="text-2xl font-black text-blue-900">14.5</span>
-                                <span class="text-xs text-blue-500 block">days left</span>
+                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Allocated Allowances</h3>
+                        <div class="grid grid-cols-3 gap-2">
+                            <div class="bg-blue-50 border border-blue-100 p-3 rounded-lg text-center">
+                                <span class="text-[10px] font-bold text-blue-700 block mb-1">Vacation</span>
+                                <span class="text-xl font-black text-blue-900">12</span>
                             </div>
-                            <div class="bg-emerald-50 border border-emerald-100 p-4 rounded-lg text-center">
-                                <span class="text-xs font-semibold text-emerald-700 block mb-1">Sick Leave</span>
-                                <span class="text-2xl font-black text-emerald-900">7.0</span>
-                                <span class="text-xs text-emerald-500 block">days left</span>
+                            <div class="bg-emerald-50 border border-emerald-100 p-3 rounded-lg text-center">
+                                <span class="text-[10px] font-bold text-emerald-700 block mb-1">Sick</span>
+                                <span class="text-xl font-black text-emerald-900">6</span>
+                            </div>
+                            <div class="bg-purple-50 border border-purple-100 p-3 rounded-lg text-center">
+                                <span class="text-[10px] font-bold text-purple-700 block mb-1">VTO (Used)</span>
+                                <span class="text-xl font-black text-purple-900">16h</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Book Leave Submission Request Form -->
-                    <div class="bg-white p-6 rounded-xl shadow-xs border border-gray-200">
+                    <!-- Request Placement Form (Disabled for Clients) -->
+                    <div id="leave-form-card" class="bg-white p-6 rounded-xl shadow-xs border border-gray-200">
                         <h3 class="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
-                            <i class="fa-solid fa-calendar-plus text-blue-600"></i> Request Time Off
+                            <i class="fa-solid fa-calendar-plus text-blue-600"></i> File Exception Request
                         </h3>
                         <form id="leave-form" onsubmit="handleLeaveSubmit(event)" class="space-y-4">
                             <div>
-                                <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Leave Category</label>
-                                <select id="leave-type" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                                    <option value="Vacation Leave">Paid Vacation</option>
-                                    <option value="Sick Leave">Sick Leave</option>
-                                    <option value="Personal Emergency">Personal Emergency</option>
+                                <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Exception Category</label>
+                                <select id="leave-type" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none" required>
+                                    <option value="Vacation Leave">Planned Vacation Leave</option>
+                                    <option value="Sick Leave">Sick Leave (Medical Emergency)</option>
+                                    <option value="VTO (Voluntary Time Off)">VTO (Voluntary Time Off - Unpaid)</option>
                                 </select>
                             </div>
                             <div class="grid grid-cols-2 gap-3">
                                 <div>
-                                    <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Start Date</label>
-                                    <input type="date" id="start-date" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                    <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Start Date/Time</label>
+                                    <input type="date" id="start-date" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" required>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-bold text-gray-600 uppercase mb-1">End Date</label>
-                                    <input type="date" id="end-date" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                    <label class="block text-xs font-bold text-gray-600 uppercase mb-1">End Date/Time</label>
+                                    <input type="date" id="end-date" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" required>
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Reason / Notes</label>
-                                <textarea id="leave-reason" rows="3" placeholder="Brief context for operations planning..." class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                                <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Justification Reason</label>
+                                <textarea id="leave-reason" rows="3" placeholder="Provide context details for queue management review..." class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" required></textarea>
                             </div>
                             <button type="submit" class="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-sm font-semibold transition-colors shadow-xs">
-                                Submit Request
+                                Submit to Queue
                             </button>
                         </form>
                     </div>
+                    
+                    <!-- Client Notification placeholder panel -->
+                    <div id="client-view-notice" class="hidden bg-slate-900 text-white p-6 rounded-xl border border-slate-800">
+                        <h4 class="font-bold mb-2 flex items-center gap-2 text-amber-400">
+                            <i class="fa-solid fa-eye"></i> Client Monitoring Active
+                        </h4>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            As a Client stakeholder, you have dynamic transparency access to monitor capacity logs, run approval actions, and flag pending line anomalies.
+                        </p>
+                    </div>
                 </div>
 
-                <!-- Column B: Interactive Request Activity Feed Log -->
+                <!-- Right Schedule Activity Log Matrix Grid -->
                 <div class="lg:col-span-2">
-                    <div class="bg-white rounded-xl shadow-xs border border-gray-200 overflow-hidden h-full flex flex-col">
+                    <div class="bg-white rounded-xl shadow-xs border border-gray-200 overflow-hidden flex flex-col h-full">
                         <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
-                            <h3 class="text-base font-bold text-slate-900">Your Leave Calendar Schedule</h3>
-                            <span class="text-xs font-medium text-gray-500 bg-white border border-gray-200 px-2.5 py-1 rounded-md">Live Session Sync</span>
+                            <h3 class="text-base font-bold text-slate-900">Personal Submission Log History</h3>
+                            <span class="text-xs text-gray-500 font-medium px-2 py-0.5 bg-white rounded border border-gray-200">Active Campaign Trace</span>
                         </div>
-                        
-                        <!-- Table View of Planned Entries -->
-                        <div class="overflow-x-auto flex-1">
+                        <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse">
                                 <thead>
                                     <tr class="border-b border-gray-200 bg-slate-50/70 text-xs font-bold uppercase tracking-wider text-gray-500">
-                                        <th class="px-6 py-3">Category Type</th>
-                                        <th class="px-6 py-3">Duration Spectrum</th>
-                                        <th class="px-6 py-3">Context Reason</th>
+                                        <th class="px-6 py-3">Category</th>
+                                        <th class="px-6 py-3">Schedule Timeline</th>
+                                        <th class="px-6 py-3">Agent Notes</th>
                                         <th class="px-6 py-3">Workflow State</th>
                                     </tr>
                                 </thead>
-                                <tbody id="leave-history-table" class="divide-y divide-gray-100 text-sm">
-                                    <!-- Static Mock Data Initial Rows -->
-                                    <tr>
-                                        <td class="px-6 py-4 font-medium text-slate-900 flex items-center gap-2">
-                                            <span class="w-2 h-2 rounded-full bg-blue-500"></span> Vacation Leave
-                                        </td>
-                                        <td class="px-6 py-4 text-gray-600">Jun 14, 2026 – Jun 18, 2026</td>
-                                        <td class="px-6 py-4 text-gray-500 italic max-w-xs truncate">Family summer trip blockout</td>
-                                        <td class="px-6 py-4"><span class="px-2.5 py-1 rounded-md text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">Pending HR review</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-6 py-4 font-medium text-slate-900 flex items-center gap-2">
-                                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Sick Leave
-                                        </td>
-                                        <td class="px-6 py-4 text-gray-600">Mar 03, 2026 – Mar 04, 2026</td>
-                                        <td class="px-6 py-4 text-gray-500 italic max-w-xs truncate">Dental extraction recovery</td>
-                                        <td class="px-6 py-4"><span class="px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">Approved</span></td>
-                                    </tr>
+                                <tbody id="agent-history-rows" class="divide-y divide-gray-100 text-sm">
+                                    <!-- Populated dynamically via state scripts -->
                                 </tbody>
                             </table>
                         </div>
@@ -255,74 +235,320 @@
             </div>
         </section>
 
+        <!-- ==================== TAB 3: APPROVALS HUB (TL, Client, Ops Exclusive) ==================== -->
+        <section id="tab-approvals" class="hidden animate-fade-in">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-slate-900">Campaign Approvals Queue</h2>
+                <p class="text-sm text-gray-500">Process queue requests, handle unexpected volume swings, and evaluate pending VTO allocations.</p>
+            </div>
+
+            <!-- Metric Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="bg-white p-4 rounded-xl border border-gray-200 flex items-center justify-between">
+                    <div>
+                        <span class="text-xs font-bold text-gray-400 uppercase">Queue Volume</span>
+                        <p id="metric-queue-count" class="text-2xl font-black text-slate-900">3 Pending</p>
+                    </div>
+                    <div class="bg-amber-100 p-2 text-amber-700 rounded-lg"><i class="fa-solid fa-hourglass-half text-lg"></i></div>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-gray-200 flex items-center justify-between">
+                    <div>
+                        <span class="text-xs font-bold text-gray-400 uppercase">Service Level (SL)</span>
+                        <p class="text-2xl font-black text-emerald-600">94.2%</p>
+                    </div>
+                    <div class="bg-emerald-100 p-2 text-emerald-700 rounded-lg"><i class="fa-solid fa-chart-line text-lg"></i></div>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-gray-200 flex items-center justify-between">
+                    <div>
+                        <span class="text-xs font-bold text-gray-400 uppercase">Active Line Staffing</span>
+                        <p class="text-2xl font-black text-blue-600">42 / 45 FTE</p>
+                    </div>
+                    <div class="bg-blue-100 p-2 text-blue-700 rounded-lg"><i class="fa-solid fa-users text-lg"></i></div>
+                </div>
+            </div>
+
+            <!-- Interception Approval Interface Log Table Container -->
+            <div class="bg-white rounded-xl shadow-xs border border-gray-200 overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
+                    <h3 class="text-base font-bold text-slate-900">Pending Exceptions Real-time Roll</h3>
+                    <span class="text-xs px-2.5 py-1 bg-blue-50 text-blue-700 font-semibold rounded-md border border-blue-100">Action Authorizations Active</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-gray-200 bg-slate-50/70 text-xs font-bold uppercase tracking-wider text-gray-500">
+                                <th class="px-6 py-3">Employee Profile</th>
+                                <th class="px-6 py-3">Type</th>
+                                <th class="px-6 py-3">Requested Target Window</th>
+                                <th class="px-6 py-3">Justification Notes</th>
+                                <th class="px-6 py-3 text-right">Process Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="approvals-queue-rows" class="divide-y divide-gray-100 text-sm">
+                            <!-- Populated dynamically via state scripts -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
     </main>
 
-    <!-- Simple Tab Switching Framework & Interaction Handlers -->
+    <!-- State Storage Matrix & Lifecycle Handlers -->
     <script>
-        function switchTab(tabId) {
-            const payslipTab = document.getElementById('tab-payslip');
-            const leaveTab = document.getElementById('tab-leave');
-            const btnPayslip = document.getElementById('btn-payslip');
-            const btnLeave = document.getElementById('btn-leave');
+        // Core Database State Mock Arrays
+        let activeRole = 'Agent';
+        let currentTabId = 'payslip';
 
-            if (tabId === 'payslip') {
-                payslipTab.classList.replace('hidden', 'block');
-                leaveTab.classList.replace('block', 'hidden');
-                btnPayslip.className = "px-4 py-2 rounded-md font-medium text-sm transition-colors bg-blue-600 text-white";
-                btnLeave.className = "px-4 py-2 rounded-md font-medium text-sm transition-colors text-slate-300 hover:bg-slate-800 hover:text-white";
+        let globalRequests = [
+            { id: 1, name: "Kyle S. Espiritu", role: "Agent", type: "VTO (Voluntary Time Off)", window: "May 24 (4 Hours)", reason: "Low call volume optimization drop request", status: "Pending" },
+            { id: 2, name: "Jane Smith", role: "Agent", type: "Vacation Leave", window: "Jun 02 – Jun 06, 2026", reason: "Pre-booked family event travel block out", status: "Pending" },
+            { id: 3, name: "Mark Rivera", role: "Agent", type: "Sick Leave", window: "May 22 – May 23, 2026", reason: "Sudden onset tooth extraction recovery emergency", status: "Pending" },
+            { id: 4, name: "Kyle S. Espiritu", role: "Agent", type: "Sick Leave", window: "Apr 10, 2026", reason: "Routine wellness dental clearance", status: "Approved" }
+        ];
+
+        // System Configuration Map Definitions
+        const rolePermissions = {
+            Agent: { showPayslip: true, showForm: true, showApprovalTab: false },
+            TL: { showPayslip: true, showForm: true, showApprovalTab: true },
+            Client: { showPayslip: false, showForm: false, showApprovalTab: true },
+            Ops: { showPayslip: true, showForm: true, showApprovalTab: true }
+        };
+
+        // UI Event Listeners
+        window.addEventListener('DOMContentLoaded', () => {
+            renderDynamicViews();
+        });
+
+        function changeRole(targetRole) {
+            activeRole = targetRole;
+            document.getElementById('current-role-display').innerText = targetRole;
+            
+            // Sync Top Selector Buttons Highlights Style Matrix
+            ['Agent', 'TL', 'Client', 'Ops'].forEach(r => {
+                const btn = document.getElementById(`role-btn-${r}`);
+                if(r === targetRole) {
+                    btn.className = "px-2.5 py-1 bg-slate-900 text-white rounded shadow-xs cursor-pointer";
+                } else {
+                    btn.className = "px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded shadow-xs cursor-pointer";
+                }
+            });
+
+            // Adjust values inside the document profile header if needed
+            const nameEl = document.getElementById('payslip-name');
+            const titleEl = document.getElementById('payslip-title');
+            if(targetRole === 'TL') {
+                nameEl.innerText = "Team Lead User";
+                titleEl.innerText = "Operations Team Lead";
+            } else if (targetRole === 'Ops') {
+                nameEl.innerText = "Operations Director Manager";
+                titleEl.innerText = "Site Operations Head";
             } else {
-                leaveTab.classList.replace('hidden', 'block');
-                payslipTab.classList.replace('block', 'hidden');
-                btnLeave.className = "px-4 py-2 rounded-md font-medium text-sm transition-colors bg-blue-600 text-white";
-                btnPayslip.className = "px-4 py-2 rounded-md font-medium text-sm transition-colors text-slate-300 hover:bg-slate-800 hover:text-white";
+                nameEl.innerText = "Kyle Sebastiane Espiritu";
+                titleEl.innerText = "Customer Service Agent";
             }
+
+            // Enforce automatic tab reset fallback structural loop boundaries
+            if(!rolePermissions[activeRole].showApprovalTab && currentTabId === 'approvals') {
+                currentTabId = 'leave';
+            }
+            if(!rolePermissions[activeRole].showPayslip && currentTabId === 'payslip') {
+                currentTabId = 'leave';
+            }
+
+            renderDynamicViews();
         }
 
-        function formatDateString(dateStr) {
-            const options = { year: 'numeric', month: 'short', day: '2-digit' };
-            return new Date(dateStr).toLocaleDateString('en-US', options);
+        function switchTab(tabId) {
+            currentTabId = tabId;
+            renderDynamicViews();
+        }
+
+        // Processing Action Callbacks for Management Controls
+        function processAction(id, resolutionState) {
+            const targetRow = globalRequests.find(item => item.id === id);
+            if (targetRow) {
+                targetRow.status = resolutionState;
+                renderDynamicViews();
+            }
         }
 
         function handleLeaveSubmit(e) {
             e.preventDefault();
-            
             const type = document.getElementById('leave-type').value;
             const start = document.getElementById('start-date').value;
             const end = document.getElementById('end-date').value;
-            const reason = document.getElementById('leave-reason').value || "No detailed notes added";
+            const reason = document.getElementById('leave-reason').value;
 
-            if (new Date(start) > new Date(end)) {
-                alert("Operation Error: End date cannot chronological precede start date.");
+            const formattedWindow = (start === end) ? formatDateString(start) : `${formatDateString(start)} – ${formatDateString(end)}`;
+            
+            // Append target context frame package into system tracking index arrays
+            globalRequests.unshift({
+                id: Date.now(),
+                name: activeRole === 'Agent' ? "Kyle S. Espiritu" : `${activeRole} Executive Override`,
+                role: activeRole,
+                type: type,
+                window: formattedWindow,
+                reason: reason,
+                status: "Pending"
+            });
+
+            document.getElementById('leave-form').reset();
+            renderDynamicViews();
+        }
+
+        function formatDateString(dateStr) {
+            if(!dateStr) return '';
+            const options = { year: 'numeric', month: 'short', day: '2-digit' };
+            return new Date(dateStr).toLocaleDateString('en-US', options);
+        }
+
+        // Primary Core Framework View Renderer
+        function renderDynamicViews() {
+            const config = rolePermissions[activeRole];
+
+            // 1. Manage Navigation Tab Component Visibility Node Elements
+            const navPayslip = document.getElementById('nav-payslip');
+            const navLeave = document.getElementById('nav-leave');
+            const navApprovals = document.getElementById('nav-approvals');
+
+            config.showPayslip ? navPayslip.classList.remove('hidden') : navPayslip.classList.add('hidden');
+            config.showApprovalTab ? navApprovals.classList.remove('hidden') : navApprovals.classList.add('hidden');
+
+            // 2. Adjust Tab Buttons Highlighting Class Styles
+            [navPayslip, navLeave, navApprovals].forEach(btn => {
+                btn.className = "px-4 py-2 rounded-md font-medium text-sm transition-colors text-slate-300 hover:bg-slate-800 hover:text-white";
+            });
+            const activeNavBtn = document.getElementById(`nav-${currentTabId}`);
+            if (activeNavBtn) {
+                activeNavBtn.className = "px-4 py-2 rounded-md font-medium text-sm transition-colors bg-blue-600 text-white";
+            }
+
+            // 3. Switch Section Visibility Containers
+            document.getElementById('tab-payslip').style.display = (currentTabId === 'payslip') ? 'block' : 'none';
+            document.getElementById('tab-leave').style.display = (currentTabId === 'leave') ? 'block' : 'none';
+            document.getElementById('tab-approvals').style.display = (currentTabId === 'approvals') ? 'block' : 'none';
+
+            // 4. Enforce Sub-Panel Display Context Locks
+            const formCard = document.getElementById('leave-form-card');
+            const clientNotice = document.getElementById('client-view-notice');
+            if (config.showForm) {
+                formCard.classList.remove('hidden');
+                clientNotice.classList.add('hidden');
+            } else {
+                formCard.classList.add('hidden');
+                clientNotice.classList.remove('hidden');
+            }
+
+            const payslipWrapper = document.getElementById('payslip-content-wrapper');
+            const payslipRestriction = document.getElementById('payslip-restriction-msg');
+            if (config.showPayslip) {
+                payslipWrapper.classList.remove('hidden');
+                payslipRestriction.classList.add('hidden');
+            } else {
+                payslipWrapper.classList.add('hidden');
+                payslipRestriction.classList.remove('hidden');
+            }
+
+            // 5. Update Badges & Counters Data Points
+            const pendingItems = globalRequests.filter(item => item.status === 'Pending');
+            const badge = document.getElementById('approval-badge');
+            badge.innerText = pendingItems.length;
+            document.getElementById('metric-queue-count').innerText = `${pendingItems.length} Pending`;
+            if(pendingItems.length === 0) {
+                badge.classList.add('hidden');
+            } else {
+                badge.classList.remove('hidden');
+            }
+
+            // 6. Render Data Log Table Rows
+            renderAgentHistoryTable();
+            renderApprovalsQueueTable();
+        }
+
+        function renderAgentHistoryTable() {
+            const container = document.getElementById('agent-history-rows');
+            container.innerHTML = '';
+
+            // Filter history rows to show only the logged-in user's requests if viewing as an Agent
+            const filteredData = (activeRole === 'Agent') 
+                ? globalRequests.filter(item => item.name === "Kyle S. Espiritu")
+                : globalRequests;
+
+            if(filteredData.length === 0) {
+                container.innerHTML = `<tr><td colspan="4" class="px-6 py-8 text-center text-gray-400 italic">No submitted files discovered inside tracking filters.</td></tr>`;
                 return;
             }
 
-            const tableBody = document.getElementById('leave-history-table');
-            const newRow = document.createElement('tr');
-            newRow.className = "border-b border-gray-100 bg-sky-50/40 transition-all duration-300";
-            
-            const typeIndicatorColor = type === 'Sick Leave' ? 'bg-emerald-500' : type === 'Vacation Leave' ? 'bg-blue-500' : 'bg-purple-500';
+            filteredData.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = "border-b border-gray-100 hover:bg-slate-50/50 transition-colors";
+                
+                const typeColor = item.type.includes('Sick') ? 'bg-emerald-500' : item.type.includes('VTO') ? 'bg-purple-500' : 'bg-blue-500';
+                const statusStyles = item.status === 'Approved' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 
+                                     item.status === 'Denied' ? 'bg-rose-50 text-rose-700 border-rose-200' : 'bg-amber-50 text-amber-700 border-amber-200';
 
-            newRow.innerHTML = `
-                <td class="px-6 py-4 font-medium text-slate-900 flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full ${typeIndicatorColor}"></span> ${type}
-                </td>
-                <td class="px-6 py-4 text-gray-600">${formatDateString(start)} – ${formatDateString(end)}</td>
-                <td class="px-6 py-4 text-gray-500 italic max-w-xs truncate">${reason}</td>
-                <td class="px-6 py-4"><span class="px-2.5 py-1 rounded-md text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">Pending HR review</span></td>
-            `;
+                tr.innerHTML = `
+                    <td class="px-6 py-4 font-medium text-slate-900 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full ${typeColor}"></span> ${item.type}
+                    </td>
+                    <td class="px-6 py-4 text-gray-600">${item.window}</td>
+                    <td class="px-6 py-4 text-gray-500 italic max-w-xs truncate">${activeRole !== 'Agent' ? `[${item.name}] ` : ''}${item.reason}</td>
+                    <td class="px-6 py-4"><span class="px-2.5 py-1 rounded-md text-xs font-semibold border ${statusStyles}">${item.status}</span></td>
+                `;
+                container.appendChild(tr);
+            });
+        }
 
-            tableBody.insertBefore(newRow, tableBody.firstChild);
-            document.getElementById('leave-form').reset();
+        function renderApprovalsQueueTable() {
+            const container = document.getElementById('approvals-queue-rows');
+            container.innerHTML = '';
+
+            const pendingItems = globalRequests.filter(item => item.status === 'Pending');
+
+            if (pendingItems.length === 0) {
+                container.innerHTML = `<tr><td colspan="5" class="px-6 py-12 text-center text-gray-400 font-medium">Queue pristine. All filed items have been cleared.</td></tr>`;
+                return;
+            }
+
+            pendingItems.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = "border-b border-gray-100 hover:bg-slate-50/40 transition-colors";
+
+                // Validation restriction locks check logic parameters
+                // Client accounts can evaluate everything, but maybe Ops wants specific items highlighted
+                const clientContextFlag = activeRole === 'Client' ? '<span class="text-[10px] bg-indigo-50 text-indigo-700 px-1.5 py-0.5 rounded ml-1 border border-indigo-100">Billable Impact</span>' : '';
+
+                tr.innerHTML = `
+                    <td class="px-6 py-4">
+                        <div class="font-bold text-slate-900">${item.name}</div>
+                        <div class="text-xs text-gray-400">Queue Vector: ${item.role} Tier</div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="font-medium text-slate-700">${item.type}</span>${clientContextFlag}
+                    </td>
+                    <td class="px-6 py-4 text-gray-600">${item.window}</td>
+                    <td class="px-6 py-4 text-gray-500 max-w-xs truncate">${item.reason}</td>
+                    <td class="px-6 py-4 text-right">
+                        <div class="inline-flex gap-1.5">
+                            <button onclick="processAction(${item.id}, 'Approved')" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-xs font-semibold shadow-xs cursor-pointer transition-colors"><i class="fa-solid fa-check"></i> Approve</button>
+                            <button onclick="processAction(${item.id}, 'Denied')" class="px-3 py-1 bg-rose-600 hover:bg-rose-700 text-white rounded text-xs font-semibold shadow-xs cursor-pointer transition-colors"><i class="fa-solid fa-xmark"></i> Deny</button>
+                        </div>
+                    </td>
+                `;
+                container.appendChild(tr);
+            });
         }
     </script>
 
-    <!-- Print-specific Overrides Styling -->
+    <!-- Print-specific CSS Overrides Structure Layer -->
     <style>
         @media print {
             body { background: white; color: black; }
-            header, button, form, #tab-leave, .no-print { display: none !important; }
+            header, button, form, .bg-amber-500, #tab-leave, #tab-approvals, .no-print { display: none !important; }
             main { max-w: 100% !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
-            #printable-area { border: none !important; shadow: none !important; padding: 0 !important; max-w: 100% !important; }
+            #tab-payslip { display: block !important; }
+            #printable-area { border: none !important; box-shadow: none !important; padding: 0 !important; max-w: 100% !important; }
         }
     </style>
 </body>
