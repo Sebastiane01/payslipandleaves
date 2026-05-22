@@ -10,17 +10,17 @@
 </head>
 <body class="bg-slate-100 font-sans text-slate-800 antialiased">
 
-    <!-- ROLE CONTROLLER & REAL-TIME CLOCK BANNER -->
+    <!-- ROLE CONTROLLER & REAL-TIME BANNER -->
     <div class="bg-slate-900 text-white border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-4 py-2.5 flex flex-col md:flex-row justify-between items-center gap-3 text-xs">
             <!-- Live Date Display -->
             <div class="flex items-center gap-2 text-slate-300 font-medium bg-slate-800/60 px-3 py-1 rounded-md border border-slate-700/50">
-                <i class="fa-solid fa-clock-three text-emerald-400"></i>
+                <i class="fa-solid fa-clock text-emerald-400"></i>
                 <span>Today:</span>
                 <span id="live-date-string" class="font-bold text-white">Friday, May 22, 2026</span>
             </div>
             
-            <!-- Account Switcher Controls -->
+            <!-- Account Switcher Controls (No Ops Manager) -->
             <div class="flex items-center gap-2">
                 <span class="text-amber-400 font-bold uppercase tracking-wider text-[10px]"><i class="fa-solid fa-shield-halved mr-1"></i> Privilege Simulation:</span>
                 <div class="flex bg-slate-800 p-0.5 rounded-lg border border-slate-700">
@@ -32,7 +32,7 @@
         </div>
     </div>
 
-    <!-- MAIN CORPORATE NAVIGATION -->
+    <!-- MAIN NAV HEADER -->
     <header class="bg-white shadow-xs border-b border-gray-200 sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
@@ -52,11 +52,11 @@
                     <i class="fa-solid fa-paper-plane mr-1.5"></i> Leave & VTO Filing
                 </button>
                 <button onclick="switchTab('approvals')" id="nav-approvals" class="hidden px-4 py-2 rounded-lg font-semibold text-xs transition-all text-gray-600 hover:text-slate-900">
-                    <i class="fa-solid fa-shield-check mr-1.5"></i> Management Approvals
+                    <i class="fa-solid fa-shield-check mr-1.5"></i> Approvals Queue
                     <span id="approval-badge" class="ml-1 px-1.5 py-0.5 text-[10px] bg-amber-500 text-slate-900 font-black rounded-full">2</span>
                 </button>
                 <button onclick="switchTab('payslip')" id="nav-payslip" class="px-4 py-2 rounded-lg font-semibold text-xs transition-all text-gray-600 hover:text-slate-900">
-                    <i class="fa-solid fa-receipt mr-1.5"></i> My Payslip
+                    <i class="fa-solid fa-receipt mr-1.5"></i> Payslip Module
                 </button>
             </nav>
         </div>
@@ -72,40 +72,38 @@
                     <h2 class="text-xl font-extrabold text-slate-900">Production Roster Matrix</h2>
                     <p class="text-xs text-gray-500">View real-time agent schedule coverage allotments and approved down-time layers.</p>
                 </div>
-                <!-- Calendar Filter Toggles -->
                 <div class="inline-flex p-0.5 bg-gray-200 rounded-lg border border-gray-300 shadow-inner text-xs">
-                    <button onclick="toggleCalendarView('weekly')" id="cal-view-weekly" class="px-3 py-1 bg-white text-slate-900 font-bold rounded-md shadow-xs cursor-pointer">Weekly Roster View</button>
-                    <button onclick="toggleCalendarView('monthly')" id="cal-view-monthly" class="px-3 py-1 text-gray-600 hover:text-slate-900 font-semibold rounded-md cursor-pointer">Monthly Grid View</button>
+                    <button onclick="toggleCalendarView('weekly')" id="cal-view-weekly" class="px-3 py-1 bg-white text-slate-900 font-bold rounded-md shadow-xs cursor-pointer">Weekly View</button>
+                    <button onclick="toggleCalendarView('monthly')" id="cal-view-monthly" class="px-3 py-1 text-gray-600 hover:text-slate-900 font-semibold rounded-md cursor-pointer">Monthly View</button>
                 </div>
             </div>
 
             <!-- WEEKLY ROSTER VIEW CONTAINER -->
             <div id="calendar-weekly-container" class="bg-white rounded-xl border border-gray-200 shadow-xs overflow-hidden">
                 <div class="p-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center text-xs font-bold text-gray-500">
-                    <span>Current Active Week Shift Schedules</span>
+                    <span>Active Week Shift Schedules</span>
                     <span class="text-blue-600">Telecom Campaign Alpha</span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-7 divide-y md:divide-y-0 md:divide-x divide-gray-200 bg-white">
-                    <!-- Day Cards -->
                     <div class="p-4 hover:bg-slate-50/60 transition-colors">
                         <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Mon / May 18</div>
                         <div class="text-sm font-extrabold text-slate-900">09:00 - 18:00</div>
-                        <div class="text-[11px] text-gray-500 mt-1"><i class="fa-solid fa-headset text-slate-400 mr-1"></i>Production Line</div>
+                        <div class="text-[11px] text-gray-500 mt-1"><i class="fa-solid fa-headset mr-1"></i>Production</div>
                     </div>
                     <div class="p-4 hover:bg-slate-50/60 transition-colors">
                         <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Tue / May 19</div>
                         <div class="text-sm font-extrabold text-slate-900">09:00 - 18:00</div>
-                        <div class="text-[11px] text-gray-500 mt-1"><i class="fa-solid fa-graduation-cap text-indigo-400 mr-1"></i>Nesting Phase</div>
+                        <div class="text-[11px] text-gray-500 mt-1"><i class="fa-solid fa-graduation-cap mr-1 text-indigo-500"></i>Nesting</div>
                     </div>
                     <div class="p-4 hover:bg-slate-50/60 transition-colors">
                         <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Wed / May 20</div>
                         <div class="text-sm font-extrabold text-slate-900">09:00 - 18:00</div>
-                        <div class="text-[11px] text-gray-500 mt-1"><i class="fa-solid fa-headset text-slate-400 mr-1"></i>Production Line</div>
+                        <div class="text-[11px] text-gray-500 mt-1"><i class="fa-solid fa-headset mr-1"></i>Production</div>
                     </div>
                     <div class="p-4 hover:bg-slate-50/60 transition-colors">
                         <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Thu / May 21</div>
                         <div class="text-sm font-extrabold text-slate-900">09:00 - 18:00</div>
-                        <div class="text-[11px] text-gray-500 mt-1"><i class="fa-solid fa-headset text-slate-400 mr-1"></i>Production Line</div>
+                        <div class="text-[11px] text-gray-500 mt-1"><i class="fa-solid fa-headset mr-1"></i>Production</div>
                     </div>
                     <!-- Today Highlight -->
                     <div class="p-4 bg-blue-50/60 border-2 border-blue-400 relative">
@@ -117,29 +115,23 @@
                     <div class="p-4 bg-slate-50">
                         <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Sat / May 23</div>
                         <div class="text-sm font-black text-rose-500 uppercase">Rest Day</div>
-                        <div class="text-[11px] text-gray-400 mt-1">Weekend Off-Line</div>
                     </div>
                     <div class="p-4 bg-slate-50">
                         <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Sun / May 24</div>
                         <div class="text-sm font-black text-rose-500 uppercase">Rest Day</div>
-                        <div class="text-[11px] text-gray-400 mt-1">Weekend Off-Line</div>
                     </div>
                 </div>
             </div>
 
-            <!-- MONTHLY ROSTER VIEW CONTAINER (HIDDEN BY DEFAULT) -->
+            <!-- MONTHLY VIEW (HIDDEN BY DEFAULT) -->
             <div id="calendar-monthly-container" class="hidden bg-white rounded-xl border border-gray-200 shadow-xs overflow-hidden transition-all">
                 <div class="grid grid-cols-7 bg-slate-100 text-center text-[10px] font-black uppercase tracking-wider text-gray-500 py-2 border-b border-gray-200">
                     <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
                 </div>
                 <div class="grid grid-cols-7 grid-rows-4 divide-x divide-y divide-gray-100 text-xs text-gray-400 bg-white">
-                    <!-- Week 1 Mock Cells -->
                     <div class="p-3 bg-slate-50/40 text-gray-300">4</div><div class="p-3 bg-slate-50/40 text-gray-300">5</div><div class="p-3 bg-slate-50/40 text-gray-300">6</div><div class="p-3 bg-slate-50/40 text-gray-300">7</div><div class="p-3 font-semibold text-slate-800">1 <span class="block text-[10px] text-emerald-600 font-bold">Shift</span></div><div class="p-3 bg-slate-50 text-rose-400">2 <span class="block text-[9px] font-bold">RD</span></div><div class="p-3 bg-slate-50 text-rose-400">3 <span class="block text-[9px] font-bold">RD</span></div>
-                    <!-- Week 2 Mock Cells -->
                     <div class="p-3 font-semibold text-slate-800">11 <span class="block text-[10px] text-emerald-600 font-bold">Shift</span></div><div class="p-3 font-semibold text-slate-800">12 <span class="block text-[10px] text-emerald-600 font-bold">Shift</span></div><div class="p-3 font-semibold text-slate-800">13 <span class="block text-[10px] text-emerald-600 font-bold">Shift</span></div><div class="p-3 font-semibold text-slate-800">14 <span class="block text-[10px] text-emerald-600 font-bold">Shift</span></div><div class="p-3 font-semibold text-slate-800">15 <span class="block text-[10px] text-emerald-600 font-bold">Shift</span></div><div class="p-3 bg-slate-50 text-rose-400">16 <span class="block text-[9px] font-bold">RD</span></div><div class="p-3 bg-slate-50 text-rose-400">17 <span class="block text-[9px] font-bold">RD</span></div>
-                    <!-- Week 3 Mock Cells (Current Week Focus) -->
                     <div class="p-3 font-semibold text-slate-800 bg-slate-50/40">18 <span class="block text-[10px] text-emerald-600">Shift</span></div><div class="p-3 font-semibold text-slate-800 bg-slate-50/40">19 <span class="block text-[10px] text-indigo-600">Nest</span></div><div class="p-3 font-semibold text-slate-800 bg-slate-50/40">20 <span class="block text-[10px] text-emerald-600">Shift</span></div><div class="p-3 font-semibold text-slate-800 bg-slate-50/40">21 <span class="block text-[10px] text-emerald-600">Shift</span></div><div class="p-3 font-bold text-blue-900 bg-blue-50 border border-blue-200">22 <span class="block text-[10px] text-blue-600 font-black">Today</span></div><div class="p-3 bg-slate-50 text-rose-400">23 <span class="block text-[9px] font-bold">RD</span></div><div class="p-3 bg-slate-50 text-rose-400">24 <span class="block text-[9px] font-bold">RD</span></div>
-                    <!-- Week 4 Mock Cells -->
                     <div class="p-3 font-semibold text-slate-800">25 <span class="block text-[10px] text-emerald-600 font-bold">Shift</span></div><div class="p-3 font-semibold text-slate-800">26 <span class="block text-[10px] text-emerald-600 font-bold">Shift</span></div><div class="p-3 font-semibold text-slate-800">27 <span class="block text-[10px] text-emerald-600 font-bold">Shift</span></div><div class="p-3 font-semibold text-slate-800">28 <span class="block text-[10px] text-purple-600 font-bold">VTO Slot</span></div><div class="p-3 font-semibold text-slate-800">29 <span class="block text-[10px] text-emerald-600 font-bold">Shift</span></div><div class="p-3 bg-slate-50 text-rose-400">30 <span class="block text-[9px] font-bold">RD</span></div><div class="p-3 bg-slate-50 text-rose-400">31 <span class="block text-[9px] font-bold">RD</span></div>
                 </div>
             </div>
@@ -149,12 +141,12 @@
         <!-- ==================== TAB: LEAVE & VTO FILING ==================== -->
         <section id="tab-leave" class="hidden animate-fade-in">
             <div class="mb-6">
-                <h2 class="text-xl font-extrabold text-slate-900">Filing Center</h2>
-                <p class="text-xs text-gray-500">Agents submit standard leave exemptions or immediate line VTO requests below.</p>
+                <h2 class="text-xl font-extrabold text-slate-900">Exception Filing Desk</h2>
+                <p class="text-xs text-gray-500">File leave requests or claim open, instantly-approvable VTO allocations.</p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Submission Form Area (Blocked for Client Owner) -->
+                <!-- Filing Form Block -->
                 <div class="lg:col-span-1 space-y-6">
                     <div id="filing-form-card" class="bg-white p-5 rounded-xl border border-gray-200 shadow-xs">
                         <h3 class="text-sm font-bold text-slate-900 mb-4 flex items-center gap-2">
@@ -163,9 +155,9 @@
                         <form id="leave-form" onsubmit="handleLeaveSubmit(event)" class="space-y-4">
                             <div>
                                 <label class="block text-[10px] font-bold uppercase text-gray-500 mb-1">Request Type</label>
-                                <select id="leave-type" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    <option value="Voluntary Time Off (VTO)">Voluntary Time Off (VTO)</option>
-                                    <option value="Planned Vacation Leave">Planned Vacation Leave</option>
+                                <select id="leave-type" onchange="checkFormRules()" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="Voluntary Time Off (VTO)">Voluntary Time Off (VTO) - Instant Agent Auto-Approve</option>
+                                    <option value="Planned Vacation Leave">Planned Vacation Leave (Requires Queue Routing)</option>
                                     <option value="Sick Leave Ticket">Sick Leave (Medical Exception)</option>
                                 </select>
                             </div>
@@ -181,30 +173,36 @@
                             </div>
                             <div>
                                 <label class="block text-[10px] font-bold uppercase text-gray-500 mb-1">Operational Reason</label>
-                                <textarea id="leave-reason" rows="3" placeholder="Explain rationale for shift omission review..." class="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea>
+                                <textarea id="leave-reason" rows="3" placeholder="Provide justification context notes..." class="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:outline-none" required></textarea>
                             </div>
-                            <button type="submit" class="w-full py-2 bg-slate-900 text-white font-bold rounded-lg text-xs hover:bg-slate-800 shadow-xs transition-colors cursor-pointer">
-                                Submit to Queue
+                            <button type="submit" id="submit-btn" class="w-full py-2 bg-slate-900 text-white font-bold rounded-lg text-xs hover:bg-slate-800 transition-colors cursor-pointer">
+                                Submit & Auto-Approve VTO
                             </button>
                         </form>
                     </div>
 
-                    <!-- Owner Info Notice (Shown only to Client) -->
-                    <div id="client-owner-notice" class="hidden bg-slate-900 text-white p-5 rounded-xl border border-slate-800">
-                        <h4 class="text-xs font-black text-amber-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                            <i class="fa-solid fa-crown"></i> Client Workspace
+                    <!-- Informative Notice Context Block -->
+                    <div class="bg-slate-900 text-white p-5 rounded-xl border border-slate-800 text-xs space-y-2">
+                        <h4 class="font-bold text-amber-400 uppercase tracking-wide flex items-center gap-1.5">
+                            <i class="fa-solid fa-circle-info"></i> Dynamic Hierarchy Matrix
                         </h4>
-                        <p class="text-xs text-slate-300 leading-relaxed">
-                            As the corporate owner, you are exempted from workforce scheduling tools. Use the <span class="text-blue-400 font-bold">Management Approvals</span> tab above to control exceptions recommended by your Team Leads.
+                        <p class="text-slate-300 leading-relaxed">
+                            <strong>Agents:</strong> Can file exceptions and instantly claim and auto-approve their own VTO entries.
+                        </p>
+                        <p class="text-slate-300 leading-relaxed">
+                            <strong>Team Leads (TL):</strong> Monitor logs and provide intermediate operational checks.
+                        </p>
+                        <p class="text-slate-300 leading-relaxed">
+                            <strong>Clients (Owner):</strong> Possess ultimate system transparency and execute the definitive final authorization sign-offs.
                         </p>
                     </div>
                 </div>
 
-                <!-- History Tracking Table Logs -->
+                <!-- Personal Logging History List -->
                 <div class="lg:col-span-2">
                     <div class="bg-white rounded-xl border border-gray-200 shadow-xs overflow-hidden">
                         <div class="px-5 py-3.5 bg-gray-50 border-b border-gray-200 font-bold text-xs text-slate-900">
-                            Log Execution Tracking History
+                            Global Operational Exceptions Log Tracker
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left text-xs">
@@ -217,7 +215,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="history-table-rows" class="divide-y divide-gray-100">
-                                    <!-- Populated programmatically via JavaScript arrays -->
+                                    <!-- Populated programmatically -->
                                 </tbody>
                             </table>
                         </div>
@@ -227,14 +225,13 @@
         </section>
 
 
-        <!-- ==================== TAB: MANAGEMENT APPROVALS HUB ==================== -->
+        <!-- ==================== TAB: APPROVALS HIERARCHY QUEUE ==================== -->
         <section id="tab-approvals" class="hidden animate-fade-in">
-            <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-2">
+            <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h2 class="text-xl font-extrabold text-slate-900">Hierarchical Verification Desk</h2>
-                    <p class="text-xs text-gray-500">Processes dual-layer authorization workflow states. Requires TL checking and Client final confirmation.</p>
+                    <h2 class="text-xl font-extrabold text-slate-900">Verification Desk</h2>
+                    <p class="text-xs text-gray-500">Dual-stage management reviews. Requires initial TL review recommendations followed by final Client verification.</p>
                 </div>
-                <!-- Interactive Workflow Guide Badge -->
                 <div class="text-[11px] bg-slate-900 text-white rounded-lg px-4 py-2 flex items-center gap-2 border border-slate-800">
                     <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-orange-400 inline-block"></span> TL Recommend</span>
                     <i class="fa-solid fa-angle-right text-gray-500"></i>
@@ -242,24 +239,23 @@
                 </div>
             </div>
 
-            <!-- Pending Review List Matrix -->
             <div class="bg-white rounded-xl border border-gray-200 shadow-xs overflow-hidden">
                 <div class="px-5 py-3.5 bg-gray-50 border-b border-gray-200 font-bold text-xs text-slate-900">
-                    Awaiting Verification Review Roll
+                    Awaiting Action Review Queue Roll
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-xs">
                         <thead class="bg-slate-50 uppercase text-[10px] tracking-wider text-gray-400 font-bold border-b border-gray-200">
                             <tr>
-                                <th class="px-5 py-3">Employee</th>
+                                <th class="px-5 py-3">Employee Profile</th>
                                 <th class="px-5 py-3">Filing Type</th>
                                 <th class="px-5 py-3">Timeframe</th>
-                                <th class="px-5 py-3">Workflow Lifecycle Track</th>
-                                <th class="px-5 py-3 text-right">Execution Action Trigger</th>
+                                <th class="px-5 py-3">Workflow State Status</th>
+                                <th class="px-5 py-3 text-right">Action Authorization</th>
                             </tr>
                         </thead>
                         <tbody id="approvals-table-rows" class="divide-y divide-gray-100">
-                            <!-- Controlled and rendered dynamically based on active privileges -->
+                            <!-- Handled dynamically -->
                         </tbody>
                     </table>
                 </div>
@@ -267,18 +263,8 @@
         </section>
 
 
-        <!-- ==================== TAB: PAYSLIP STATEMENT ==================== -->
+        <!-- ==================== TAB: PAYSLIP MODULE ==================== -->
         <section id="tab-payslip" class="hidden animate-fade-in">
-            <div id="payslip-lock-screen" class="hidden bg-white border border-gray-200 rounded-2xl p-8 text-center max-w-sm mx-auto my-12 shadow-xs">
-                <div class="w-12 h-12 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-3">
-                    <i class="fa-solid fa-shield-lock text-lg"></i>
-                </div>
-                <h3 class="text-sm font-black text-slate-900 uppercase">Information Sandbox Boundary</h3>
-                <p class="text-xs text-gray-500 mt-1.5 leading-relaxed">
-                    Client/Owner accounts are restricted from examining internal payroll documentation frameworks. Switch role simulation profiles to continue.
-                </p>
-            </div>
-
             <div id="payslip-document-wrapper" class="bg-white rounded-xl border border-gray-200 p-6 md:p-8 max-w-3xl mx-auto shadow-xs relative">
                 <!-- Branding Header -->
                 <div class="border-b border-gray-200 pb-4 flex justify-between items-start">
@@ -289,7 +275,7 @@
                     <span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase rounded border border-emerald-200">Disbursed</span>
                 </div>
 
-                <!-- Info Matrix -->
+                <!-- Metadata Matrix -->
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 py-4 my-4 bg-slate-50/80 border border-gray-200/50 rounded-lg px-4 text-[11px]">
                     <div><span class="text-gray-400 block font-semibold uppercase text-[9px]">Employee Name</span><span class="font-bold text-slate-900">Kyle S. Espiritu</span></div>
                     <div><span class="text-gray-400 block font-semibold uppercase text-[9px]">Job Allocation</span><span class="font-medium text-slate-700">Customer Support Agent</span></div>
@@ -297,7 +283,7 @@
                     <div><span class="text-gray-400 block font-semibold uppercase text-[9px]">Disbursement Method</span><span class="font-medium text-slate-700">Direct Deposit Electronic</span></div>
                 </div>
 
-                <!-- Breakdown Tables -->
+                <!-- Financial Matrices -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4 text-xs">
                     <div>
                         <h4 class="font-bold text-gray-400 uppercase text-[10px] tracking-wider border-b pb-1 mb-2">Earnings</h4>
@@ -317,11 +303,11 @@
                     </div>
                 </div>
 
-                <!-- Net Value Block -->
+                <!-- Net Take-Home Summary Footer -->
                 <div class="mt-6 p-4 bg-slate-900 text-white rounded-lg flex justify-between items-center">
                     <div>
                         <div class="font-bold text-xs">Net Take-Home Yield</div>
-                        <div class="text-[10px] text-slate-400">Net salary package post all operational structural deductions</div>
+                        <div class="text-[10px] text-slate-400">Salary disbursed post campaign operational adjustments</div>
                     </div>
                     <div class="text-2xl font-black text-emerald-400 tracking-tight">$935.00</div>
                 </div>
@@ -330,46 +316,41 @@
 
     </main>
 
-    <!-- SYSTEM DATABASE STORAGE CORE & ACTION CONTROLLER LAYER -->
+    <!-- SYSTEM CORE STATE DATABASE ENGINE -->
     <script>
-        // Data Store State Arrays
         let activeRole = 'Agent';
         let activeTab = 'calendar';
-        let activeCalendarMode = 'weekly';
 
-        // Master Exception Queue
+        // Master Shared Queue Index
         let requestQueue = [
-            { id: 1, name: "Kyle S. Espiritu", type: "Voluntary Time Off (VTO)", timeframe: "May 26 (Full Shift)", notes: "Optimizing personal time window during low queue volumes.", status: "Pending TL Review" },
-            { id: 2, name: "Sarah Jenkins", type: "Planned Vacation Leave", timeframe: "Jun 01 – Jun 05, 2026", notes: "Family holiday block booked in advance.", status: "Recommended by TL" },
-            { id: 3, name: "Marcus Finch", type: "Sick Leave Ticket", timeframe: "May 23, 2026", notes: "Emergency scheduled dental extraction clearance work.", status: "Approved" },
-            { id: 4, name: "Kyle S. Espiritu", type: "Voluntary Time Off (VTO)", timeframe: "May 12 (4 Hours)", notes: "Voluntary drop requested due to excess staffing levels.", status: "Denied by Client" }
+            { id: 1, name: "Kyle S. Espiritu", type: "Voluntary Time Off (VTO)", timeframe: "May 26 (Full Shift)", notes: "Claimed immediate low volume slot allocation.", status: "Approved" },
+            { id: 2, name: "Jane Smith", type: "Planned Vacation Leave", timeframe: "Jun 02 – Jun 06, 2026", notes: "Pre-booked vacation timeline blockout.", status: "Pending TL Review" },
+            { id: 3, name: "Mark Rivera", type: "Planned Vacation Leave", timeframe: "Jun 15 – Jun 18, 2026", notes: "Family trip arrangements finalized.", status: "Recommended by TL" },
+            { id: 4, name: "Kyle S. Espiritu", type: "Sick Leave Ticket", timeframe: "May 10, 2026", notes: "Routine dental check extraction clearance.", status: "Approved" }
         ];
 
-        // Access Rule Matrix Mapping
+        // Permissions Matrix Core rules configuration mapping
         const accessRules = {
-            Agent: { showApprovalsTab: false, allowFilingForm: true, showPayslip: true },
-            TL: { showApprovalsTab: true, allowFilingForm: true, showPayslip: true },
-            Client: { showApprovalsTab: true, allowFilingForm: false, showPayslip: false }
+            Agent: { showApprovalsTab: false, allowFilingForm: true },
+            TL: { showApprovalsTab: true, allowFilingForm: true },
+            Client: { showApprovalsTab: true, allowFilingForm: true } // Client can access everything, including filing test data
         };
 
-        // Lifecycle Initialization
         window.addEventListener('DOMContentLoaded', () => {
+            checkFormRules();
             renderMasterLayout();
         });
 
-        // Tab View Switching Handler Engine
         function switchTab(tabId) {
             activeTab = tabId;
             renderMasterLayout();
         }
 
-        // Calendar View Filtering Router
         function toggleCalendarView(mode) {
-            activeCalendarMode = mode;
-            const weekBtn = document.getElementById('cal-view-weekly');
-            const monthBtn = document.getElementById('cal-view-monthly');
             const weekBox = document.getElementById('calendar-weekly-container');
             const monthBox = document.getElementById('calendar-monthly-container');
+            const weekBtn = document.getElementById('cal-view-weekly');
+            const monthBtn = document.getElementById('cal-view-monthly');
 
             if (mode === 'weekly') {
                 weekBox.classList.remove('hidden');
@@ -384,33 +365,39 @@
             }
         }
 
-        // Role Modification Simulation Handler 
+        // Adjust interactive button rules based on the dropdown type selection
+        function checkFormRules() {
+            const type = document.getElementById('leave-type').value;
+            const btn = document.getElementById('submit-btn');
+            
+            if (type.includes('VTO')) {
+                btn.innerText = "Submit & Auto-Approve VTO";
+                btn.className = "w-full py-2 bg-purple-600 text-white font-bold rounded-lg text-xs hover:bg-purple-700 transition-colors cursor-pointer shadow-xs";
+            } else {
+                btn.innerText = "Submit to Review Queue";
+                btn.className = "w-full py-2 bg-slate-900 text-white font-bold rounded-lg text-xs hover:bg-slate-800 transition-colors cursor-pointer shadow-xs";
+            }
+        }
+
         function changeRole(targetRole) {
             activeRole = targetRole;
             document.getElementById('current-role-display').innerText = `${targetRole} Authorization View`;
             
-            // Re-render button active stylings matrices
             ['Agent', 'TL', 'Client'].forEach(r => {
                 const btn = document.getElementById(`role-btn-${r}`);
-                if (r === targetRole) {
-                    btn.className = "px-2.5 py-1 bg-blue-600 text-white rounded-md font-bold transition-all cursor-pointer";
-                } else {
-                    btn.className = "px-2.5 py-1 text-slate-400 hover:text-slate-200 rounded-md font-medium transition-all cursor-pointer";
-                }
+                btn.className = (r === targetRole) 
+                    ? "px-2.5 py-1 bg-blue-600 text-white rounded-md font-bold transition-all cursor-pointer shadow-xs" 
+                    : "px-2.5 py-1 text-slate-400 hover:text-slate-200 rounded-md font-medium transition-all cursor-pointer";
             });
 
-            // Auto fallback redirect loops checking bounds conditions logic
+            // Navigation loop tracking fallback boundaries safety check
             if (!accessRules[activeRole].showApprovalsTab && activeTab === 'approvals') {
-                activeTab = 'calendar';
-            }
-            if (!accessRules[activeRole].showPayslip && activeTab === 'payslip') {
                 activeTab = 'calendar';
             }
 
             renderMasterLayout();
         }
 
-        // Form Handling Form Engine Interceptors 
         function handleLeaveSubmit(e) {
             e.preventDefault();
             const type = document.getElementById('leave-type').value;
@@ -418,19 +405,22 @@
             const end = document.getElementById('end-date').value;
             const notes = document.getElementById('leave-reason').value;
 
-            const dateWindowStr = (start === end) ? formatDateString(start) : `${formatDateString(start)} – ${formatDateString(end)}`;
+            const timeString = (start === end) ? formatDateString(start) : `${formatDateString(start)} – ${formatDateString(end)}`;
+            
+            // Core Rule Implementation: Agent can approve their own VTO instantly
+            const initialStatus = type.includes('VTO') ? 'Approved' : 'Pending TL Review';
 
-            // Inject structural payload arrays indices parameters package
             requestQueue.unshift({
                 id: Date.now(),
-                name: "Kyle S. Espiritu",
+                name: activeRole === 'Agent' ? "Kyle S. Espiritu" : `${activeRole} Test Entry`,
                 type: type,
-                timeframe: dateWindowStr,
+                timeframe: timeString,
                 notes: notes,
-                status: "Pending TL Review"
+                status: initialStatus
             });
 
             document.getElementById('leave-form').reset();
+            checkFormRules();
             renderMasterLayout();
         }
 
@@ -439,122 +429,92 @@
             return new Date(str).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
         }
 
-        // Two-Step Processing Action Engine Callback Mechanics
+        // Multi-tier workflow processing step callback handlers
         function executeWorkflowAction(id, actionType) {
             const item = requestQueue.find(x => x.id === id);
             if (!item) return;
 
             if (activeRole === 'TL') {
-                // TL Actions
-                if (actionType === 'approve') {
-                    item.status = 'Recommended by TL'; // Escalates to Client
-                } else if (actionType === 'deny') {
-                    item.status = 'Denied by TL';
-                }
+                if (actionType === 'recommend') item.status = 'Recommended by TL';
+                if (actionType === 'deny') item.status = 'Denied by TL';
             } else if (activeRole === 'Client') {
-                // Client Actions
-                if (actionType === 'approve') {
-                    item.status = 'Approved'; // Finalized Sign-off
-                } else if (actionType === 'deny') {
-                    item.status = 'Denied by Client';
-                }
+                if (actionType === 'approve') item.status = 'Approved'; // Client executes absolute final sign-off
+                if (actionType === 'deny') item.status = 'Denied by Client';
             }
             renderMasterLayout();
         }
 
-        // CORE SYSTEM VIEW RENDERER CONTROLLER ENGINE MATRIX
+        // PRIMARY INTERFACE DRAW ENGINE
         function renderMasterLayout() {
-            const rule = accessRules[activeRole];
+            const rules = accessRules[activeRole];
 
-            // 1. Sync View Tab Visibility Switches
-            const btnCalendar = document.getElementById('nav-calendar');
-            const btnLeave = document.getElementById('nav-leave');
-            const btnApprovals = document.getElementById('nav-approvals');
-            const btnPayslip = document.getElementById('nav-payslip');
+            // 1. Navbar State Switching
+            const navCalendar = document.getElementById('nav-calendar');
+            const navLeave = document.getElementById('nav-leave');
+            const navApprovals = document.getElementById('nav-approvals');
+            const navPayslip = document.getElementById('nav-payslip');
 
-            rule.showApprovalsTab ? btnApprovals.classList.remove('hidden') : btnApprovals.classList.add('hidden');
-            rule.showPayslip ? btnPayslip.classList.remove('hidden') : btnPayslip.classList.add('hidden');
+            rules.showApprovalsTab ? navApprovals.classList.remove('hidden') : navApprovals.classList.add('hidden');
 
-            // Reset selection style strings configurations layouts
-            [btnCalendar, btnLeave, btnApprovals, btnPayslip].forEach(b => {
+            [navCalendar, navLeave, navApprovals, navPayslip].forEach(b => {
                 b.className = "px-4 py-2 rounded-lg font-semibold text-xs transition-all text-gray-600 hover:text-slate-900 cursor-pointer";
             });
             document.getElementById(`nav-${activeTab}`).className = "px-4 py-2 rounded-lg font-semibold text-xs transition-all bg-white text-slate-900 shadow-xs border border-gray-200/40";
 
-            // Toggle Container Blocks Sections States Visual Layouts
+            // 2. Sections Container Blocks Visibility
             document.getElementById('tab-calendar').style.display = (activeTab === 'calendar') ? 'block' : 'none';
             document.getElementById('tab-leave').style.display = (activeTab === 'leave') ? 'block' : 'none';
             document.getElementById('tab-approvals').style.display = (activeTab === 'approvals') ? 'block' : 'none';
             document.getElementById('tab-payslip').style.display = (activeTab === 'payslip') ? 'block' : 'none';
 
-            // 2. Form vs Notice Panels Logic Configuration Locks
-            if (rule.allowFilingForm) {
-                document.getElementById('filing-form-card').classList.remove('hidden');
-                document.getElementById('client-owner-notice').classList.add('hidden');
-            } else {
-                document.getElementById('filing-form-card').classList.add('hidden');
-                document.getElementById('client-owner-notice').classList.remove('hidden');
-            }
-
-            if (rule.showPayslip) {
-                document.getElementById('payslip-document-wrapper').classList.remove('hidden');
-                document.getElementById('payslip-lock-screen').classList.add('hidden');
-            } else {
-                document.getElementById('payslip-document-wrapper').classList.add('hidden');
-                document.getElementById('payslip-lock-screen').classList.remove('hidden');
-            }
-
-            // 3. Re-calculate Global Badge Trackers and Filters Counters
-            // Items are actionable for TL if "Pending TL Review"
-            // Items are actionable for Client if "Recommended by TL"
-            const actionableCount = requestQueue.filter(x => {
+            // 3. Dynamic Calculation Counters Badges Setup
+            // Items are actionable for TL if status is pending review
+            // Items are actionable for Client if status is recommended by TL
+            const actionablesCount = requestQueue.filter(x => {
                 if (activeRole === 'TL') return x.status === 'Pending TL Review';
                 if (activeRole === 'Client') return x.status === 'Recommended by TL';
                 return false;
             }).length;
 
             const badge = document.getElementById('approval-badge');
-            badge.innerText = actionableCount;
-            actionableCount === 0 ? badge.classList.add('hidden') : badge.classList.remove('hidden');
+            badge.innerText = actionablesCount;
+            actionablesCount === 0 ? badge.classList.add('hidden') : badge.classList.remove('hidden');
 
-            // 4. Fire Internal Sub-table Loops Data Generation Renderers
+            // 4. Repopulate Logging Matrices tables contents
             buildHistoryLogTable();
             buildApprovalsQueueTable();
         }
 
-        // Sub-Table Content Generators
         function buildHistoryLogTable() {
             const tbody = document.getElementById('history-table-rows');
             tbody.innerHTML = '';
 
-            // Filter context viewing lists arrays tracking models
-            const outputSet = (activeRole === 'Agent') 
-                ? requestQueue.filter(item => item.name === "Kyle S. Espiritu") 
-                : requestQueue;
+            // Agents only track their own entries while TL & Clients have structural macro logs insight views
+            const dataset = (activeRole === 'Agent') ? requestQueue.filter(x => x.name === "Kyle S. Espiritu") : requestQueue;
 
-            if (outputSet.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="px-5 py-6 text-center text-gray-400 italic">No historical exceptions match the criteria.</td></tr>`;
+            if (dataset.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="px-5 py-6 text-center text-gray-400 italic">No logging records found inside current queue.</td></tr>`;
                 return;
             }
 
-            outputSet.forEach(item => {
+            dataset.forEach(item => {
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50/50 transition-colors";
 
-                let typeColor = item.type.includes('VTO') ? 'bg-purple-500' : item.type.includes('Sick') ? 'bg-emerald-500' : 'bg-blue-500';
+                let indicatorColor = item.type.includes('VTO') ? 'bg-purple-500' : item.type.includes('Sick') ? 'bg-emerald-500' : 'bg-blue-500';
                 
-                let statusClass = 'bg-gray-100 text-gray-700 border-gray-200';
-                if (item.status === 'Approved') statusClass = 'bg-emerald-50 text-emerald-700 border-emerald-200 font-bold';
-                if (item.status.includes('Recommended')) statusClass = 'bg-orange-50 text-orange-700 border-orange-200';
-                if (item.status.includes('Denied')) statusClass = 'bg-rose-50 text-rose-700 border-rose-200';
+                let badgeClass = 'bg-gray-100 text-gray-700 border-gray-200';
+                if (item.status === 'Approved') badgeClass = 'bg-emerald-50 text-emerald-700 border-emerald-200 font-bold';
+                if (item.status.includes('Recommended')) badgeClass = 'bg-orange-50 text-orange-700 border-orange-200';
+                if (item.status.includes('Denied')) badgeClass = 'bg-rose-50 text-rose-700 border-rose-200';
 
                 tr.innerHTML = `
                     <td class="px-5 py-4 font-bold text-slate-900 flex items-center gap-2">
-                        <span class="w-1.5 h-1.5 rounded-full ${typeColor}"></span> ${item.type}
+                        <span class="w-1.5 h-1.5 rounded-full ${indicatorColor}"></span> ${item.type}
                     </td>
                     <td class="px-5 py-4 text-gray-600">${item.timeframe}</td>
                     <td class="px-5 py-4 text-gray-400 font-medium max-w-xs truncate">${activeRole !== 'Agent' ? `<span class="text-slate-700 font-bold">[${item.name}]</span> ` : ''}${item.notes}</td>
-                    <td class="px-5 py-4"><span class="px-2 py-0.5 border rounded text-[10px] font-semibold ${statusClass}">${item.status}</span></td>
+                    <td class="px-5 py-4"><span class="px-2 py-0.5 border rounded text-[10px] font-semibold ${badgeClass}">${item.status}</span></td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -564,50 +524,44 @@
             const tbody = document.getElementById('approvals-table-rows');
             tbody.innerHTML = '';
 
-            // Filter based on who can action what step
-            // TL sees everything, but can only action "Pending TL Review"
-            // Client sees everything, but can only action "Recommended by TL"
             if (requestQueue.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="px-5 py-8 text-center text-gray-400 italic">No files in queue.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="px-5 py-6 text-center text-gray-400 italic">Queue pristine.</td></tr>`;
                 return;
             }
 
             requestQueue.forEach(item => {
                 const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50/50 transition-colors";
+                tr.className = "hover:bg-slate-50/40 transition-colors";
 
-                // Determine if actionable by current logged-in simulator tier
-                let isActionable = false;
-                if (activeRole === 'TL' && item.status === 'Pending TL Review') isActionable = true;
-                if (activeRole === 'Client' && item.status === 'Recommended by TL') isActionable = true;
+                let actionable = false;
+                if (activeRole === 'TL' && item.status === 'Pending TL Review') actionable = true;
+                if (activeRole === 'Client' && item.status === 'Recommended by TL') actionable = true;
 
-                // Status tag design selection configurations matrices
-                let stateBadge = `<span class="px-2 py-0.5 rounded text-[10px] font-medium border border-gray-200 bg-gray-50 text-gray-600">${item.status}</span>`;
+                let stateTag = `<span class="px-2 py-0.5 rounded text-[10px] border border-gray-200 bg-gray-50 text-gray-600">${item.status}</span>`;
                 if (item.status === 'Pending TL Review') {
-                    stateBadge = `<span class="px-2 py-0.5 rounded text-[10px] font-bold border border-amber-200 bg-amber-50 text-amber-800"><i class="fa-solid fa-hourglass-start mr-1"></i>Awaiting TL Check</span>`;
+                    stateTag = `<span class="px-2 py-0.5 rounded text-[10px] font-bold border border-amber-200 bg-amber-50 text-amber-800"><i class="fa-solid fa-hourglass-start mr-1"></i>Awaiting TL Action</span>`;
                 } else if (item.status === 'Recommended by TL') {
-                    stateBadge = `<span class="px-2 py-0.5 rounded text-[10px] font-black border border-orange-200 bg-orange-50 text-orange-800 animate-pulse"><i class="fa-solid fa-turn-up mr-1"></i>Awaiting Owner Sign-off</span>`;
+                    stateTag = `<span class="px-2 py-0.5 rounded text-[10px] font-black border border-orange-200 bg-orange-50 text-orange-800 animate-pulse"><i class="fa-solid fa-turn-up mr-1"></i>Awaiting Owner Approval</span>`;
                 } else if (item.status === 'Approved') {
-                    stateBadge = `<span class="px-2 py-0.5 rounded text-[10px] font-bold border border-emerald-200 bg-emerald-50 text-emerald-800"><i class="fa-solid fa-circle-check mr-1"></i>Finalized Approved</span>`;
+                    stateTag = `<span class="px-2 py-0.5 rounded text-[10px] font-bold border border-emerald-200 bg-emerald-50 text-emerald-800"><i class="fa-solid fa-circle-check mr-1"></i>Finalized Sign-off</span>`;
                 } else if (item.status.includes('Denied')) {
-                    stateBadge = `<span class="px-2 py-0.5 rounded text-[10px] font-semibold border border-rose-200 bg-rose-50 text-rose-700"><i class="fa-solid fa-ban mr-1"></i>Rejected Out</span>`;
+                    stateTag = `<span class="px-2 py-0.5 rounded text-[10px] font-semibold border border-rose-200 bg-rose-50 text-rose-700"><i class="fa-solid fa-ban mr-1"></i>Rejected</span>`;
                 }
 
-                // Render functional buttons if authorization match matrices rules line up
-                let actionCellButtons = `<span class="text-gray-400 text-[11px] font-medium italic"><i class="fa-solid fa-lock mr-1 text-gray-300"></i>No Action Access</span>`;
-                
-                if (isActionable) {
+                let controlActionGroup = `<span class="text-gray-400 text-[11px] font-medium italic"><i class="fa-solid fa-lock mr-1 text-gray-300"></i>No Access</span>`;
+
+                if (actionable) {
                     if (activeRole === 'TL') {
-                        actionCellButtons = `
+                        controlActionGroup = `
                             <div class="inline-flex gap-1">
-                                <button onclick="executeWorkflowAction(${item.id}, 'approve')" class="px-2.5 py-1 bg-amber-500 hover:bg-amber-600 text-slate-900 text-[10px] font-black rounded shadow-xs cursor-pointer transition-all"><i class="fa-solid fa-share"></i> Recommend</button>
-                                <button onclick="executeWorkflowAction(${item.id}, 'deny')" class="px-2.5 py-1 bg-rose-600 hover:bg-rose-700 text-white text-[10px] font-bold rounded shadow-xs cursor-pointer transition-all"><i class="fa-solid fa-xmark"></i> Deny</button>
+                                <button onclick="executeWorkflowAction(${item.id}, 'recommend')" class="px-2.5 py-1 bg-amber-500 hover:bg-amber-600 text-slate-900 text-[10px] font-black rounded cursor-pointer transition-all shadow-xs"><i class="fa-solid fa-share"></i> Recommend</button>
+                                <button onclick="executeWorkflowAction(${item.id}, 'deny')" class="px-2.5 py-1 bg-rose-600 hover:bg-rose-700 text-white text-[10px] font-bold rounded cursor-pointer transition-all shadow-xs"><i class="fa-solid fa-xmark"></i> Deny</button>
                             </div>`;
                     } else if (activeRole === 'Client') {
-                        actionCellButtons = `
+                        controlActionGroup = `
                             <div class="inline-flex gap-1">
-                                <button onclick="executeWorkflowAction(${item.id}, 'approve')" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-black rounded shadow-xs cursor-pointer transition-all"><i class="fa-solid fa-crown"></i> Final Approve</button>
-                                <button onclick="executeWorkflowAction(${item.id}, 'deny')" class="px-2.5 py-1 bg-rose-600 hover:bg-rose-700 text-white text-[10px] font-bold rounded shadow-xs cursor-pointer transition-all"><i class="fa-solid fa-xmark"></i> Final Deny</button>
+                                <button onclick="executeWorkflowAction(${item.id}, 'approve')" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-black rounded cursor-pointer transition-all shadow-xs"><i class="fa-solid fa-crown"></i> Final Approve</button>
+                                <button onclick="executeWorkflowAction(${item.id}, 'deny')" class="px-2.5 py-1 bg-rose-600 hover:bg-rose-700 text-white text-[10px] font-bold rounded cursor-pointer transition-all shadow-xs"><i class="fa-solid fa-xmark"></i> Final Deny</button>
                             </div>`;
                     }
                 }
@@ -616,8 +570,8 @@
                     <td class="px-5 py-3.5"><div class="font-bold text-slate-900">${item.name}</div><div class="text-[10px] text-gray-400">Queue Entry Vector</div></td>
                     <td class="px-5 py-3.5 font-medium text-slate-700">${item.type}</td>
                     <td class="px-5 py-3.5 text-gray-600">${item.timeframe}</td>
-                    <td class="px-5 py-3.5">${stateBadge}</td>
-                    <td class="px-5 py-3.5 text-right font-medium">${actionCellButtons}</td>
+                    <td class="px-5 py-3.5">${stateTag}</td>
+                    <td class="px-5 py-3.5 text-right font-medium">${controlActionGroup}</td>
                 `;
                 tbody.appendChild(tr);
             });
